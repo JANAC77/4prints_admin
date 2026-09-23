@@ -17,6 +17,7 @@ import { Button } from '../components/common/Button.jsx';
 import { Badge } from '../components/common/Badge.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { categoryApi } from '../api/category.api.js';
+import { subcategoryApi } from '../api/subcategory.api.js';
 import { adminApi } from '../api/admin.api.js';
 import { auditApi } from '../api/audit.api.js';
 import { mockCategories, mockSubcategories, mockAdminsList, mockAuditLogs } from '../utils/mockData.js';
@@ -53,14 +54,19 @@ export function DashboardPage({ onNavigate }) {
       }
 
       try {
-        const [catRes, admRes, auditRes] = await Promise.allSettled([
+        const [catRes, subRes, admRes, auditRes] = await Promise.allSettled([
           categoryApi.list(),
+          subcategoryApi.list({}),
           adminApi.listAdmins(),
           auditApi.list({ limit: 5 }),
         ]);
 
         const categoriesData = catRes.status === 'fulfilled' ? catRes.value?.categories || [] : [];
         const categoriesTotal = catRes.status === 'fulfilled' ? catRes.value?.total || categoriesData.length : 0;
+        
+        const subcategoriesData = subRes.status === 'fulfilled' ? subRes.value?.subcategories || [] : [];
+        const subcategoriesTotal = subRes.status === 'fulfilled' ? subRes.value?.total || subcategoriesData.length : 0;
+        
         const adminsData = admRes.status === 'fulfilled' ? admRes.value?.admins || [] : [];
         const adminsTotal = admRes.status === 'fulfilled' ? admRes.value?.total || adminsData.length : 0;
         const auditData = auditRes.status === 'fulfilled' ? auditRes.value?.logs || [] : [];
@@ -68,7 +74,7 @@ export function DashboardPage({ onNavigate }) {
 
         setStats({
           categories: categoriesTotal || mockCategories.length,
-          subcategories: mockSubcategories.length,
+          subcategories: subcategoriesTotal || subcategoriesData.length,
           admins: adminsTotal || mockAdminsList.length,
           auditLogs: auditTotal || mockAuditLogs.length,
         });
