@@ -59,33 +59,27 @@ export function SubcategoriesPage({ initialCategoryId }) {
     async function loadCats() {
       if (isDemoMode) {
         setCategories(mockCategories);
-        if (!selectedCategoryId && mockCategories.length > 0) {
-          setSelectedCategoryId(mockCategories[0]._id);
-        }
         return;
       }
       try {
         const res = await categoryApi.list();
         const cats = res?.categories || mockCategories;
         setCategories(cats);
-        if (!selectedCategoryId && cats.length > 0) {
-          setSelectedCategoryId(cats[0]._id);
-        }
       } catch (err) {
         setCategories(mockCategories);
-        if (!selectedCategoryId) setSelectedCategoryId(mockCategories[0]._id);
       }
     }
     loadCats();
   }, [isDemoMode]);
 
-  // Load Subcategories for selected category
+  // Load Subcategories for selected category (or all if none selected)
   const loadSubcategories = async () => {
-    if (!selectedCategoryId) return;
     setLoading(true);
 
     if (isDemoMode) {
-      const subs = mockSubcategories.filter((s) => s.categoryId === selectedCategoryId);
+      const subs = selectedCategoryId
+        ? mockSubcategories.filter((s) => s.categoryId === selectedCategoryId)
+        : mockSubcategories;
       setSubcategories(subs);
       setLoading(false);
       return;
@@ -93,18 +87,22 @@ export function SubcategoriesPage({ initialCategoryId }) {
 
     try {
       const res = await subcategoryApi.list({
-        categoryId: selectedCategoryId,
+        categoryId: selectedCategoryId || undefined,
         isActive: statusFilter === 'all' ? undefined : statusFilter === 'active' ? 'true' : 'false',
       });
       if (res.success && Array.isArray(res.subcategories)) {
         setSubcategories(res.subcategories);
       } else {
-        const fallback = mockSubcategories.filter((s) => s.categoryId === selectedCategoryId);
+        const fallback = selectedCategoryId
+          ? mockSubcategories.filter((s) => s.categoryId === selectedCategoryId)
+          : mockSubcategories;
         setSubcategories(fallback);
       }
     } catch (err) {
       console.warn('Fallback subcategories:', err);
-      const fallback = mockSubcategories.filter((s) => s.categoryId === selectedCategoryId);
+      const fallback = selectedCategoryId
+        ? mockSubcategories.filter((s) => s.categoryId === selectedCategoryId)
+        : mockSubcategories;
       setSubcategories(fallback);
     } finally {
       setLoading(false);
@@ -306,6 +304,7 @@ export function SubcategoriesPage({ initialCategoryId }) {
             onChange={(e) => setSelectedCategoryId(e.target.value)}
             className="w-full rounded-xl py-2.5 px-3.5 text-sm bg-slate-50 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
           >
+            <option value="">All Categories (All Subcategories)</option>
             {categories.map((cat) => (
               <option key={cat._id} value={cat._id}>
                 {cat.name} ({cat.slug})
@@ -356,7 +355,7 @@ export function SubcategoriesPage({ initialCategoryId }) {
         <EmptyState
           icon={Boxes}
           title="No Subcategories Found"
-          description={`No subcategories found under "${currentCategory?.name || 'this category'}".`}
+          description={`No subcategories found under "${currentCategory?.name || 'selected filter'}".`}
           actionLabel="Create Subcategory"
           onAction={handleOpenCreate}
         />
@@ -402,7 +401,7 @@ export function SubcategoriesPage({ initialCategoryId }) {
                 </TableCell>
                 <TableCell>
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
-                    {currentCategory?.name || 'Parent Category'}
+                    {categories.find((c) => c._id === (sub.categoryId || sub.category?._id || sub.category))?.name || sub.category?.name || currentCategory?.name || 'All Categories'}
                   </span>
                 </TableCell>
                 <TableCell>
