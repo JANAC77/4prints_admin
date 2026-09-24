@@ -2,29 +2,31 @@
 
 @layer base {
   :root {
-    --bg-primary: #f8fafc;
+    --bg-primary: #FDFBF6;
     --bg-surface: #ffffff;
-    --bg-sidebar: #0f172a;
+    --bg-sidebar: #111111;
     --bg-card: #ffffff;
-    --text-primary: #0f172a;
-    --text-secondary: #64748b;
-    --text-muted: #94a3b8;
-    --border-color: #e2e8f0;
-    --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-    --accent-glow: rgba(99, 102, 241, 0.15);
+    --text-primary: #111111;
+    --text-secondary: #374151;
+    --text-muted: #6b7280;
+    --border-color: #e5e7eb;
+    --primary-yellow: #ffd40c;
+    --primary-gradient: linear-gradient(135deg, #ffd40c 0%, #e5bd00 100%);
+    --accent-glow: rgba(255, 212, 12, 0.25);
   }
 
   .dark {
-    --bg-primary: #090d16;
-    --bg-surface: #0f172a;
-    --bg-sidebar: #050811;
-    --bg-card: #111827;
+    --bg-primary: #0b0d13;
+    --bg-surface: #121620;
+    --bg-sidebar: #07090e;
+    --bg-card: #181e2b;
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
     --border-color: #1e293b;
-    --primary-gradient: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
-    --accent-glow: rgba(99, 102, 241, 0.25);
+    --primary-yellow: #ffd40c;
+    --primary-gradient: linear-gradient(135deg, #ffd40c 0%, #f5c800 100%);
+    --accent-glow: rgba(255, 212, 12, 0.35);
   }
 
   body {

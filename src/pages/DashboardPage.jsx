@@ -63,10 +63,8 @@ export function DashboardPage({ onNavigate }) {
 
         const categoriesData = catRes.status === 'fulfilled' ? catRes.value?.categories || [] : [];
         const categoriesTotal = catRes.status === 'fulfilled' ? catRes.value?.total || categoriesData.length : 0;
-        
         const subcategoriesData = subRes.status === 'fulfilled' ? subRes.value?.subcategories || [] : [];
         const subcategoriesTotal = subRes.status === 'fulfilled' ? subRes.value?.total || subcategoriesData.length : 0;
-        
         const adminsData = admRes.status === 'fulfilled' ? admRes.value?.admins || [] : [];
         const adminsTotal = admRes.status === 'fulfilled' ? admRes.value?.total || adminsData.length : 0;
         const auditData = auditRes.status === 'fulfilled' ? auditRes.value?.logs || [] : [];
@@ -110,13 +108,13 @@ export function DashboardPage({ onNavigate }) {
   return (
     <div className="space-y-6">
       {/* Welcome Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-900 via-indigo-800 to-purple-900 text-white p-6 sm:p-8 shadow-xl border border-indigo-700/50">
-        <div className="absolute top-0 right-0 -mt-12 -mr-12 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-slate-800 to-zinc-900 text-white p-6 sm:p-8 shadow-xl border border-slate-800">
+        <div className="absolute top-0 right-0 -mt-12 -mr-12 w-64 h-64 bg-[#FFD40C]/15 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <span className="text-xs uppercase font-bold tracking-widest px-2.5 py-1 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 text-indigo-200">
-                Administration Portal
+              <span className="text-xs uppercase font-extrabold tracking-widest px-2.5 py-1 rounded-lg bg-[#FFD40C] text-slate-950 font-bold">
+                4PRINTS Admin Console
               </span>
               {admin?.tfaEnabled && (
                 <span className="flex items-center gap-1 text-xs font-semibold text-emerald-300 bg-emerald-950/60 px-2.5 py-1 rounded-lg border border-emerald-500/30">
@@ -128,7 +126,7 @@ export function DashboardPage({ onNavigate }) {
             <h2 className="text-2xl sm:text-3xl font-extrabold font-heading tracking-tight text-white">
               Welcome back, {admin?.name || 'Administrator'}
             </h2>
-            <p className="text-xs sm:text-sm text-indigo-200 max-w-xl">
+            <p className="text-xs sm:text-sm text-slate-300 max-w-xl">
               Manage product hierarchy, subcategories, staff permissions, and review security logs from one unified control center.
             </p>
           </div>

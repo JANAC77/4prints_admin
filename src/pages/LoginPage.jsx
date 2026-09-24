@@ -15,6 +15,8 @@ import { Input } from '../components/common/Input.jsx';
 import { Button } from '../components/common/Button.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 
+import logoImg from '../assets/logo.png';
+
 export function LoginPage() {
   const { login, verifyTfaLogin, loginDemo, tfaChallenge, cancelTfaChallenge, isLoading } =
     useAuth();
@@ -62,22 +64,27 @@ export function LoginPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background ambient lighting */}
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-amber-500/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-[#FFD40C]/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10">
         {/* Card */}
         <div className="glass-dropdown bg-slate-900/90 border border-slate-800 rounded-3xl p-8 shadow-2xl backdrop-blur-xl animate-fade-in">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex p-3 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white shadow-xl shadow-indigo-500/25 mb-4 animate-glow">
-              <Layers className="w-7 h-7" />
+            <div className="inline-flex p-3 rounded-2xl bg-white/90 shadow-xl mb-4 border border-amber-400/30">
+              <img src={logoImg} alt="4PRINTS Logo" className="h-10 w-auto object-contain" />
             </div>
-            <h1 className="text-2xl font-extrabold font-heading text-white tracking-tight">
-              4PRINTS Admin
-            </h1>
+            <div className="flex items-center justify-center gap-2">
+              <h1 className="text-2xl font-black font-heading text-white tracking-tight">
+                4PRINTS
+              </h1>
+              <span className="text-xs uppercase font-extrabold px-2 py-0.5 rounded bg-[#FFD40C] text-slate-950">
+                Admin
+              </span>
+            </div>
             <p className="text-xs text-slate-400 mt-1">
-              Sign in to manage catalog, administrators, and security
+              Store management console & security control
             </p>
           </div>
 

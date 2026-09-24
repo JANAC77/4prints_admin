@@ -23,7 +23,7 @@ export function Button({
 
   const variantStyles = {
     primary:
-      'bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white shadow-md hover:shadow-indigo-500/25 focus:ring-indigo-500',
+      'bg-[#FFD40C] hover:bg-[#e5bd00] text-slate-950 font-bold shadow-md hover:shadow-amber-500/25 focus:ring-amber-400',
     secondary:
       'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 focus:ring-slate-400',
     danger:
@@ -31,7 +31,7 @@ export function Button({
     ghost:
       'bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800/80 text-slate-700 dark:text-slate-300 focus:ring-slate-400',
     outline:
-      'bg-transparent border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 focus:ring-indigo-500',
+      'bg-transparent border border-slate-300 dark:border-slate-700 hover:bg-[#FFD40C]/10 text-slate-800 dark:text-slate-200 focus:ring-amber-400',
   };
 
   return (

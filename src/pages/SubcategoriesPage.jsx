@@ -54,6 +54,10 @@ export function SubcategoriesPage({ initialCategoryId }) {
     imageFile: null,
   });
 
+  const currentCategory = useMemo(() => {
+    return categories.find((c) => String(c._id || c.id) === String(selectedCategoryId));
+  }, [categories, selectedCategoryId]);
+
   // Load Parent Categories list
   useEffect(() => {
     async function loadCats() {
@@ -63,10 +67,16 @@ export function SubcategoriesPage({ initialCategoryId }) {
       }
       try {
         const res = await categoryApi.list();
-        const cats = res?.categories || mockCategories;
+        const cats =
+          (Array.isArray(res?.categories) && res.categories) ||
+          (Array.isArray(res?.data?.categories) && res.data.categories) ||
+          (Array.isArray(res?.data) && res.data) ||
+          (Array.isArray(res) && res) ||
+          [];
         setCategories(cats);
       } catch (err) {
-        setCategories(mockCategories);
+        console.error('Failed to load categories from API:', err);
+        setCategories([]);
       }
     }
     loadCats();
@@ -78,7 +88,7 @@ export function SubcategoriesPage({ initialCategoryId }) {
 
     if (isDemoMode) {
       const subs = selectedCategoryId
-        ? mockSubcategories.filter((s) => s.categoryId === selectedCategoryId)
+        ? mockSubcategories.filter((s) => String(s.categoryId || s.category?._id || s.category) === String(selectedCategoryId))
         : mockSubcategories;
       setSubcategories(subs);
       setLoading(false);
@@ -86,24 +96,86 @@ export function SubcategoriesPage({ initialCategoryId }) {
     }
 
     try {
-      const res = await subcategoryApi.list({
-        categoryId: selectedCategoryId || undefined,
-        isActive: statusFilter === 'all' ? undefined : statusFilter === 'active' ? 'true' : 'false',
-      });
-      if (res.success && Array.isArray(res.subcategories)) {
-        setSubcategories(res.subcategories);
+      let fetchedSubs = [];
+      const activeParam = statusFilter === 'all' ? undefined : statusFilter === 'active' ? 'true' : 'false';
+
+      if (selectedCategoryId) {
+        // Single category selected
+        const res = await subcategoryApi.list({
+          categoryId: selectedCategoryId,
+          isActive: activeParam,
+        });
+        const subs =
+          (Array.isArray(res?.subcategories) && res.subcategories) ||
+          (Array.isArray(res?.data?.subcategories) && res.data.subcategories) ||
+          (Array.isArray(res?.subCategories) && res.subCategories) ||
+          (Array.isArray(res?.data?.subCategories) && res.data.subCategories) ||
+          (Array.isArray(res?.data) && res.data) ||
+          (Array.isArray(res) && res) ||
+          [];
+        fetchedSubs = subs;
       } else {
-        const fallback = selectedCategoryId
-          ? mockSubcategories.filter((s) => s.categoryId === selectedCategoryId)
-          : mockSubcategories;
-        setSubcategories(fallback);
+        // "All Categories" selected: Fastify backend requires categoryId query param per request.
+        let catList = categories;
+        if (!catList || catList.length === 0) {
+          try {
+            const catRes = await categoryApi.list();
+            catList =
+              (Array.isArray(catRes?.categories) && catRes.categories) ||
+              (Array.isArray(catRes?.data?.categories) && catRes.data.categories) ||
+              (Array.isArray(catRes?.data) && catRes.data) ||
+              (Array.isArray(catRes) && catRes) ||
+              [];
+            if (catList.length > 0) {
+              setCategories(catList);
+            }
+          } catch (e) {
+            catList = [];
+          }
+        }
+
+        if (catList.length > 0) {
+          const results = await Promise.allSettled(
+            catList.map((cat) =>
+              subcategoryApi.list({
+                categoryId: cat._id || cat.id,
+                isActive: activeParam,
+              })
+            )
+          );
+
+          const allSubs = [];
+          results.forEach((res) => {
+            if (res.status === 'fulfilled') {
+              const val = res.value;
+              const subs =
+                (Array.isArray(val?.subcategories) && val.subcategories) ||
+                (Array.isArray(val?.data?.subcategories) && val.data.subcategories) ||
+                (Array.isArray(val?.subCategories) && val.subCategories) ||
+                (Array.isArray(val?.data?.subCategories) && val.data.subCategories) ||
+                (Array.isArray(val?.data) && val.data) ||
+                (Array.isArray(val) && val) ||
+                [];
+              allSubs.push(...subs);
+            }
+          });
+
+          // Deduplicate subcategories by ID
+          const seen = new Set();
+          fetchedSubs = allSubs.filter((item) => {
+            const id = String(item._id || item.id || item.slug);
+            if (seen.has(id)) return false;
+            seen.add(id);
+            return true;
+          });
+        }
       }
+
+      setSubcategories(fetchedSubs);
     } catch (err) {
-      console.warn('Fallback subcategories:', err);
-      const fallback = selectedCategoryId
-        ? mockSubcategories.filter((s) => s.categoryId === selectedCategoryId)
-        : mockSubcategories;
-      setSubcategories(fallback);
+      console.error('Error fetching subcategories from database:', err);
+      toast.error(err.message || 'Failed to fetch subcategories from database');
+      setSubcategories([]);
     } finally {
       setLoading(false);
     }
@@ -111,13 +183,21 @@ export function SubcategoriesPage({ initialCategoryId }) {
 
   useEffect(() => {
     loadSubcategories();
-  }, [selectedCategoryId, isDemoMode, statusFilter]);
+  }, [selectedCategoryId, isDemoMode, statusFilter, categories.length]);
 
   const filteredSubcategories = useMemo(() => {
     return subcategories.filter((sub) => {
+      // Filter by category if selected
+      if (selectedCategoryId) {
+        const subCatId = String(sub.categoryId || sub.category?._id || sub.category || '');
+        if (subCatId && subCatId !== String(selectedCategoryId)) {
+          return false;
+        }
+      }
+
       const matchesSearch =
-        sub.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        sub.slug.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (sub.name && sub.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (sub.slug && sub.slug.toLowerCase().includes(searchQuery.toLowerCase())) ||
         (sub.description && sub.description.toLowerCase().includes(searchQuery.toLowerCase()));
 
       const matchesStatus =
@@ -129,9 +209,19 @@ export function SubcategoriesPage({ initialCategoryId }) {
 
       return matchesSearch && matchesStatus;
     });
-  }, [subcategories, searchQuery, statusFilter]);
+  }, [subcategories, selectedCategoryId, searchQuery, statusFilter]);
 
-  const currentCategory = categories.find((c) => c._id === selectedCategoryId);
+  const getParentCategoryName = (sub) => {
+    if (typeof sub.category === 'object' && sub.category?.name) {
+      return sub.category.name;
+    }
+    const subCatId = String(sub.categoryId || sub.category?._id || sub.category || '');
+    if (subCatId) {
+      const cat = categories.find((c) => String(c._id || c.id) === subCatId);
+      if (cat?.name) return cat.name;
+    }
+    return currentCategory?.name || 'All Categories';
+  };
 
   const handleOpenCreate = () => {
     setFormData({
@@ -379,7 +469,7 @@ export function SubcategoriesPage({ initialCategoryId }) {
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shrink-0">
                       <img
-                        src={sub.image || 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=200&auto=format&fit=crop&q=80'}
+                        src={sub.image || sub.imageUrl || 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=200&auto=format&fit=crop&q=80'}
                         alt={sub.name}
                         className="w-full h-full object-cover"
                       />
@@ -401,7 +491,7 @@ export function SubcategoriesPage({ initialCategoryId }) {
                 </TableCell>
                 <TableCell>
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
-                    {categories.find((c) => c._id === (sub.categoryId || sub.category?._id || sub.category))?.name || sub.category?.name || currentCategory?.name || 'All Categories'}
+                    {getParentCategoryName(sub)}
                   </span>
                 </TableCell>
                 <TableCell>
