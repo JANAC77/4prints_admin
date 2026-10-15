@@ -13,6 +13,7 @@ import {
   ExternalLink,
   Layers,
   ArrowUpDown,
+  Package,
 } from 'lucide-react';
 import { Table, TableHead, TableRow, TableCell } from '../components/common/Table.jsx';
 import { Button } from '../components/common/Button.jsx';
@@ -26,9 +27,9 @@ import { categoryApi } from '../api/category.api.js';
 import { mockCategories } from '../utils/mockData.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
-import { formatDate, slugify, truncate } from '../utils/formatters.js';
+import { formatDate, slugify, truncate, getDisplayImageUrl } from '../utils/formatters.js';
 
-export function CategoriesPage({ onSelectCategoryForSubcategories }) {
+export function CategoriesPage({ onSelectCategoryForSubcategories, onSelectCategoryForProducts }) {
   const { isDemoMode } = useAuth();
   const toast = useToast();
 
@@ -319,8 +320,12 @@ export function CategoriesPage({ onSelectCategoryForSubcategories }) {
                   <div className="flex items-center space-x-3">
                     <div className="w-11 h-11 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shrink-0">
                       <img
-                        src={cat.image || 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=200&auto=format&fit=crop&q=80'}
+                        src={getDisplayImageUrl(cat.image)}
                         alt={cat.name}
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = 'https://placehold.co/200x200/1e293b/f8fafc?text=' + encodeURIComponent(cat.name || 'Category');
+                        }}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -349,6 +354,15 @@ export function CategoriesPage({ onSelectCategoryForSubcategories }) {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end space-x-1">
+                    {onSelectCategoryForProducts && (
+                      <button
+                        onClick={() => onSelectCategoryForProducts(cat._id)}
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-slate-800 transition-colors"
+                        title="View Products in this Category"
+                      >
+                        <Package className="w-4 h-4" />
+                      </button>
+                    )}
                     <button
                       onClick={() => handleOpenPreview(cat)}
                       className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-slate-800 transition-colors"

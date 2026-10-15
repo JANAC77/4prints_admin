@@ -42,10 +42,9 @@ export const Input = forwardRef(function Input(
             py-2.5 
             bg-slate-50 dark:bg-slate-900/60 
             text-slate-900 dark:text-slate-100 
-            border ${
-              error
-                ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20'
-                : 'border-slate-300 dark:border-slate-700/80 focus:border-indigo-500 focus:ring-indigo-500/20'
+            border ${error
+              ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20'
+              : 'border-slate-300 dark:border-slate-700/80 focus:border-indigo-500 focus:ring-indigo-500/20'
             }
             placeholder:text-slate-400 dark:placeholder:text-slate-500
             focus:outline-none focus:ring-4

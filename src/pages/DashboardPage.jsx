@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   FolderTree,
   Boxes,
+  Package,
   Users,
   ShieldCheck,
   Plus,
@@ -18,9 +19,16 @@ import { Badge } from '../components/common/Badge.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { categoryApi } from '../api/category.api.js';
 import { subcategoryApi } from '../api/subcategory.api.js';
+import { productApi } from '../api/product.api.js';
 import { adminApi } from '../api/admin.api.js';
 import { auditApi } from '../api/audit.api.js';
-import { mockCategories, mockSubcategories, mockAdminsList, mockAuditLogs } from '../utils/mockData.js';
+import {
+  mockCategories,
+  mockSubcategories,
+  mockProducts,
+  mockAdminsList,
+  mockAuditLogs,
+} from '../utils/mockData.js';
 import { formatDate, formatRelativeTime } from '../utils/formatters.js';
 
 export function DashboardPage({ onNavigate }) {
@@ -29,6 +37,7 @@ export function DashboardPage({ onNavigate }) {
   const [stats, setStats] = useState({
     categories: 0,
     subcategories: 0,
+    products: 0,
     admins: 0,
     auditLogs: 0,
   });
@@ -44,6 +53,7 @@ export function DashboardPage({ onNavigate }) {
         setStats({
           categories: mockCategories.length,
           subcategories: mockSubcategories.length,
+          products: mockProducts.length,
           admins: mockAdminsList.length,
           auditLogs: mockAuditLogs.length,
         });
@@ -54,9 +64,10 @@ export function DashboardPage({ onNavigate }) {
       }
 
       try {
-        const [catRes, subRes, admRes, auditRes] = await Promise.allSettled([
+        const [catRes, subRes, prodRes, admRes, auditRes] = await Promise.allSettled([
           categoryApi.list(),
           subcategoryApi.list({}),
+          productApi.list(),
           adminApi.listAdmins(),
           auditApi.list({ limit: 5 }),
         ]);
@@ -65,6 +76,8 @@ export function DashboardPage({ onNavigate }) {
         const categoriesTotal = catRes.status === 'fulfilled' ? catRes.value?.total || categoriesData.length : 0;
         const subcategoriesData = subRes.status === 'fulfilled' ? subRes.value?.subcategories || [] : [];
         const subcategoriesTotal = subRes.status === 'fulfilled' ? subRes.value?.total || subcategoriesData.length : 0;
+        const productsData = prodRes.status === 'fulfilled' ? prodRes.value?.products || [] : [];
+        const productsTotal = prodRes.status === 'fulfilled' ? prodRes.value?.total || productsData.length : 0;
         const adminsData = admRes.status === 'fulfilled' ? admRes.value?.admins || [] : [];
         const adminsTotal = admRes.status === 'fulfilled' ? admRes.value?.total || adminsData.length : 0;
         const auditData = auditRes.status === 'fulfilled' ? auditRes.value?.logs || [] : [];
@@ -73,6 +86,7 @@ export function DashboardPage({ onNavigate }) {
         setStats({
           categories: categoriesTotal || mockCategories.length,
           subcategories: subcategoriesTotal || subcategoriesData.length,
+          products: productsTotal || mockProducts.length,
           admins: adminsTotal || mockAdminsList.length,
           auditLogs: auditTotal || mockAuditLogs.length,
         });
@@ -133,6 +147,15 @@ export function DashboardPage({ onNavigate }) {
 
           <div className="flex flex-wrap gap-2.5">
             <Button
+              variant="primary"
+              size="sm"
+              icon={Plus}
+              onClick={() => onNavigate('products')}
+              className="bg-[#FFD40C] text-slate-950 font-bold hover:bg-amber-400"
+            >
+              Add Product
+            </Button>
+            <Button
               variant="secondary"
               size="sm"
               icon={Plus}
@@ -155,11 +178,20 @@ export function DashboardPage({ onNavigate }) {
       </div>
 
       {/* KPI Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4">
         <StatCard
-          title="Total Categories"
+          title="Products"
+          value={stats.products}
+          subtitle="Ready print catalog"
+          icon={Package}
+          gradient="from-amber-500 to-yellow-600"
+          trend="Storefront active"
+          trendType="up"
+        />
+        <StatCard
+          title="Categories"
           value={stats.categories}
-          subtitle="Top-level product groups"
+          subtitle="Top-level groups"
           icon={FolderTree}
           gradient="from-indigo-500 to-indigo-600"
           trend="+12% this month"
@@ -168,7 +200,7 @@ export function DashboardPage({ onNavigate }) {
         <StatCard
           title="Subcategories"
           value={stats.subcategories}
-          subtitle="Nested product types"
+          subtitle="Nested print items"
           icon={Boxes}
           gradient="from-blue-500 to-cyan-600"
           trend="Active in catalog"
@@ -177,16 +209,16 @@ export function DashboardPage({ onNavigate }) {
         <StatCard
           title="Admins & Staff"
           value={stats.admins}
-          subtitle="Authorized team members"
+          subtitle="Authorized team"
           icon={Users}
           gradient="from-purple-500 to-pink-600"
           trend="Role-governed"
           trendType="neutral"
         />
         <StatCard
-          title="Audit Security Events"
+          title="Audit Events"
           value={stats.auditLogs}
-          subtitle="Logged admin actions"
+          subtitle="Logged actions"
           icon={ShieldCheck}
           gradient="from-emerald-500 to-teal-600"
           trend="Full audit trail"

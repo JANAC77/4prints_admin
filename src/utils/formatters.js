@@ -75,8 +75,69 @@ export function truncate(text, max = 50) {
 export function formatBytes(bytes, decimals = 2) {
   if (!+bytes) return '0 Bytes';
   const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
   const sizes = ['Bytes', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }
+
+/**
+ * Resolves an image URL so it renders properly in the browser.
+ * Routes private Cloudflare R2 URLs through the /r2-media streaming proxy
+ * and handles presigned URLs and fallback placeholders.
+ */
+export function getDisplayImageUrl(url, fallback = 'https://placehold.co/200x200/1e293b/f8fafc?text=Print') {
+  if (!url || typeof url !== 'string') return fallback;
+  const cleanUrl = url.trim();
+  if (!cleanUrl) return fallback;
+
+  // Base64 or Blob URLs can be used directly
+  if (cleanUrl.startsWith('data:') || cleanUrl.startsWith('blob:')) return cleanUrl;
+
+  // If already a local relative proxy URL, return as is
+  if (cleanUrl.startsWith('/r2-media/')) return cleanUrl;
+
+  // If already a full local host URL pointing to /r2-media/, return as relative
+  if (cleanUrl.includes('/r2-media/')) {
+    const idx = cleanUrl.indexOf('/r2-media/');
+    return cleanUrl.substring(idx);
+  }
+
+  // Handle Cloudflare R2 bucket storage URLs (presigned or raw)
+  if (cleanUrl.includes('r2.cloudflarestorage.com')) {
+    try {
+      const noQuery = cleanUrl.split('?')[0];
+
+      // Format 1: https://<endpoint>/4printdev/<key>
+      if (noQuery.includes('r2.cloudflarestorage.com/4printdev/')) {
+        const key = noQuery.split('r2.cloudflarestorage.com/4printdev/')[1];
+        if (key) return `/r2-media/${key}`;
+      }
+
+      // Format 2: https://4printdev.<endpoint>/<key>
+      if (noQuery.includes('.r2.cloudflarestorage.com/')) {
+        let key = noQuery.split('.r2.cloudflarestorage.com/')[1];
+        if (key) {
+          key = key.replace(/^4printdev\//, '');
+          return `/r2-media/${key}`;
+        }
+      }
+
+      // Generic fallback for any r2.cloudflarestorage.com path
+      const afterDomain = noQuery.split('r2.cloudflarestorage.com/')[1];
+      if (afterDomain) {
+        const key = afterDomain.replace(/^4printdev\//, '');
+        return `/r2-media/${key}`;
+      }
+    } catch {
+      // fallback
+    }
+  }
+
+  // Handle direct storage keys like "categories/...", "subcategories/...", "products/..."
+  if (/^(categories|subcategories|products|admins)\//.test(cleanUrl)) {
+    return `/r2-media/${cleanUrl.split('?')[0]}`;
+  }
+
+  return cleanUrl;
+}
+
