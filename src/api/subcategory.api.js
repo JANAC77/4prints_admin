@@ -5,9 +5,12 @@ export const subcategoryApi = {
    * List subcategories for a given category
    * @param {{ categoryId: string, isActive?: string }} params
    */
-  async list(params) {
+  async list(params = {}) {
+    if (!params?.categoryId) {
+      return { success: true, subcategories: [], total: 0 };
+    }
     const query = new URLSearchParams();
-    if (params.categoryId) query.set('categoryId', params.categoryId);
+    query.set('categoryId', params.categoryId);
     if (params.isActive !== undefined && params.isActive !== '') {
       query.set('isActive', String(params.isActive));
     }
@@ -55,7 +58,7 @@ export const subcategoryApi = {
       formData.append('image', data.imageFile);
     }
 
-    return apiMultipartRequest(`/admin/subcategories/${id}`, formData, { method: 'PUT' });
+    return apiMultipartRequest(`/admin/subcategories/${id}`, formData, { method: 'PATCH' });
   },
 
   /**

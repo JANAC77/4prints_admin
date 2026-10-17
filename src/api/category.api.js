@@ -55,7 +55,7 @@ export const categoryApi = {
       formData.append('image', data.imageFile);
     }
 
-    return apiMultipartRequest(`/admin/categories/${id}`, formData, { method: 'PUT' });
+    return apiMultipartRequest(`/admin/categories/${id}`, formData, { method: 'PATCH' });
   },
 
   /**

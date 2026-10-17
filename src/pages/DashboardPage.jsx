@@ -64,9 +64,8 @@ export function DashboardPage({ onNavigate }) {
       }
 
       try {
-        const [catRes, subRes, prodRes, admRes, auditRes] = await Promise.allSettled([
+        const [catRes, prodRes, admRes, auditRes] = await Promise.allSettled([
           categoryApi.list(),
-          subcategoryApi.list({}),
           productApi.list(),
           adminApi.listAdmins(),
           auditApi.list({ limit: 5 }),
@@ -74,8 +73,20 @@ export function DashboardPage({ onNavigate }) {
 
         const categoriesData = catRes.status === 'fulfilled' ? catRes.value?.categories || [] : [];
         const categoriesTotal = catRes.status === 'fulfilled' ? catRes.value?.total || categoriesData.length : 0;
-        const subcategoriesData = subRes.status === 'fulfilled' ? subRes.value?.subcategories || [] : [];
-        const subcategoriesTotal = subRes.status === 'fulfilled' ? subRes.value?.total || subcategoriesData.length : 0;
+
+        // Fetch subcategories per category since backend requires categoryId
+        let subcategoriesTotal = 0;
+        if (categoriesData.length > 0) {
+          const subResults = await Promise.allSettled(
+            categoriesData.map((c) => subcategoryApi.list({ categoryId: c._id || c.id }))
+          );
+          subResults.forEach((res) => {
+            if (res.status === 'fulfilled') {
+              const subs = res.value?.subcategories || res.value?.data?.subcategories || [];
+              subcategoriesTotal += Array.isArray(subs) ? subs.length : (res.value?.total || 0);
+            }
+          });
+        }
         const productsData = prodRes.status === 'fulfilled' ? prodRes.value?.products || [] : [];
         const productsTotal = prodRes.status === 'fulfilled' ? prodRes.value?.total || productsData.length : 0;
         const adminsData = admRes.status === 'fulfilled' ? admRes.value?.admins || [] : [];

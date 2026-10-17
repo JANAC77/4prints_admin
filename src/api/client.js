@@ -35,7 +35,7 @@ export async function apiRequest(endpoint, options = {}) {
   const url = `${baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
 
   const headers = {
-    'Content-Type': 'application/json',
+    ...(options.body !== undefined ? { 'Content-Type': 'application/json' } : {}),
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...(options.headers || {}),
   };
