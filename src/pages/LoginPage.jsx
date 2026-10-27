@@ -197,7 +197,7 @@ export function LoginPage() {
           </Button>
 
           <p className="text-[11px] text-slate-500 text-center mt-5">
-            Backend API default: <code className="text-slate-400">http://localhost:3000</code>
+            Backend Live Server: <code className="text-slate-400">https://api.autoneu.in</code>
           </p>
         </div>
       </div>

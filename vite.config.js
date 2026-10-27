@@ -3,6 +3,37 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import https from 'node:https';
+import dns from 'node:dns';
+
+// Fix Node.js 18+ / 22+ / 24+ on Windows: Force IPv4 first to prevent ETIMEDOUT (internalConnectMultiple) with Cloudflare IPv6
+dns.setDefaultResultOrder('ipv4first');
+
+// Clean HTTPS agent to prevent TLS socket hang up and ECONNRESET with Cloudflare
+const proxyAgent = new https.Agent({
+  keepAlive: false,
+  servername: 'api.autoneu.in',
+});
+
+const proxyTargetConfig = {
+  target: 'https://api.autoneu.in',
+  changeOrigin: true,
+  secure: true,
+  agent: proxyAgent,
+  headers: {
+    Connection: 'close',
+  },
+  configure: (proxy) => {
+    proxy.on('error', (err, _req, res) => {
+      console.warn('[vite proxy error]', err.message);
+      if (res && !res.headersSent && typeof res.writeHead === 'function') {
+        res.writeHead(502, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, error: 'Proxy connection error: ' + err.message }));
+      }
+    });
+  },
+};
+
 
 const r2Client = new S3Client({
   endpoint: 'https://a70d86b21360a62b32237371962c1f87.r2.cloudflarestorage.com',
@@ -155,14 +186,9 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      '/admin': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
-      '/categories': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
+      '/admin': proxyTargetConfig,
+      '/categories': proxyTargetConfig,
+      '/hello': proxyTargetConfig,
     },
   },
 });

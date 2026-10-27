@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
-import { checkBackendHealth, getApiBaseUrl } from '../../api/client.js';
+import { checkBackendHealth, getDisplayApiBaseUrl } from '../../api/client.js';
 
 export function Header({ activeTab, onToggleMobileSidebar }) {
   const { isDark, toggleTheme } = useTheme();
@@ -90,7 +90,7 @@ export function Header({ activeTab, onToggleMobileSidebar }) {
           title={
             serverStatus.online
               ? `Backend Connected (${serverStatus.latency}ms latency). Click to refresh.`
-              : 'Backend not reachable on ' + (getApiBaseUrl() || 'localhost:3000') + '. Click to retry.'
+              : 'Backend not reachable on ' + getDisplayApiBaseUrl() + '. Click to retry.'
           }
           className={`cursor-pointer px-2.5 py-1.5 rounded-xl border flex items-center gap-2 text-xs font-medium transition-all ${
             serverStatus.online

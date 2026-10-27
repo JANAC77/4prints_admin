@@ -24,7 +24,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useTheme } from '../context/ThemeContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { authApi } from '../api/auth.api.js';
-import { checkBackendHealth, getApiBaseUrl, setApiBaseUrl } from '../api/client.js';
+import { checkBackendHealth, getDisplayApiBaseUrl, setApiBaseUrl } from '../api/client.js';
 import { formatDate } from '../utils/formatters.js';
 
 export function SettingsPage() {
@@ -33,7 +33,7 @@ export function SettingsPage() {
   const toast = useToast();
 
   // API Config
-  const [apiUrl, setApiUrl] = useState(getApiBaseUrl() || 'http://localhost:3000');
+  const [apiUrl, setApiUrl] = useState(getDisplayApiBaseUrl());
   const [pingResult, setPingResult] = useState(null);
   const [isPinging, setIsPinging] = useState(false);
 
@@ -276,7 +276,7 @@ export function SettingsPage() {
               <div className="flex-1 w-full">
                 <Input
                   label="API Base URL"
-                  placeholder="http://localhost:3000"
+                  placeholder="https://api.autoneu.in"
                   value={apiUrl}
                   onChange={(e) => setApiUrl(e.target.value)}
                 />

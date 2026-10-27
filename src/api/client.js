@@ -1,15 +1,34 @@
 const STORAGE_KEY_TOKEN = '4prints_admin_token';
 const STORAGE_KEY_BASE_URL = '4prints_admin_api_base';
 
+export const DEFAULT_API_BASE_URL = 'https://api.autoneu.in';
+
 export function getApiBaseUrl() {
-  return localStorage.getItem(STORAGE_KEY_BASE_URL) || '';
+  const stored = localStorage.getItem(STORAGE_KEY_BASE_URL);
+  if (stored) {
+    if (stored.includes('localhost:3000')) {
+      localStorage.removeItem(STORAGE_KEY_BASE_URL);
+      return '';
+    }
+    return stored;
+  }
+  return import.meta.env.VITE_API_BASE_URL || '';
+}
+
+export function getDisplayApiBaseUrl() {
+  return localStorage.getItem(STORAGE_KEY_BASE_URL) || import.meta.env.VITE_API_BASE_URL || DEFAULT_API_BASE_URL;
 }
 
 export function setApiBaseUrl(url) {
   if (!url) {
     localStorage.removeItem(STORAGE_KEY_BASE_URL);
   } else {
-    localStorage.setItem(STORAGE_KEY_BASE_URL, url.replace(/\/+$/, ''));
+    const cleanUrl = url.replace(/\/+$/, '');
+    if (cleanUrl === DEFAULT_API_BASE_URL) {
+      localStorage.removeItem(STORAGE_KEY_BASE_URL);
+    } else {
+      localStorage.setItem(STORAGE_KEY_BASE_URL, cleanUrl);
+    }
   }
 }
 

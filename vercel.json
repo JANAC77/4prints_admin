@@ -6,6 +6,18 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
+      "source": "/admin/:path*",
+      "destination": "https://api.autoneu.in/admin/:path*"
+    },
+    {
+      "source": "/categories/:path*",
+      "destination": "https://api.autoneu.in/categories/:path*"
+    },
+    {
+      "source": "/hello",
+      "destination": "https://api.autoneu.in/hello"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
