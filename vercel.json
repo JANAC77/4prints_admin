@@ -6,6 +6,14 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
+      "source": "/r2-media/:path*",
+      "destination": "/api/r2-media?key=:path*"
+    },
+    {
+      "source": "/api/upload-r2",
+      "destination": "/api/upload-r2"
+    },
+    {
       "source": "/admin/:path*",
       "destination": "https://api.autoneu.in/admin/:path*"
     },

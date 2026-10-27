@@ -82,9 +82,39 @@ export function formatBytes(bytes, decimals = 2) {
 }
 
 /**
+ * Checks if a Cloudflare R2 / AWS S3 presigned URL is still valid and not expired.
+ */
+export function isPresignedUrlValid(url) {
+  try {
+    if (!url.includes('X-Amz-Signature') || !url.includes('X-Amz-Date') || !url.includes('X-Amz-Expires')) {
+      return false;
+    }
+    const parsed = new URL(url);
+    const dateStr = parsed.searchParams.get('X-Amz-Date');
+    const expiresSec = parseInt(parsed.searchParams.get('X-Amz-Expires') || '0', 10);
+    if (!dateStr || !expiresSec) return false;
+
+    const year = parseInt(dateStr.substring(0, 4), 10);
+    const month = parseInt(dateStr.substring(4, 6), 10) - 1;
+    const day = parseInt(dateStr.substring(6, 8), 10);
+    const hour = parseInt(dateStr.substring(9, 11), 10);
+    const min = parseInt(dateStr.substring(11, 13), 10);
+    const sec = parseInt(dateStr.substring(13, 15), 10);
+
+    const signTime = Date.UTC(year, month, day, hour, min, sec);
+    const expireTime = signTime + expiresSec * 1000;
+
+    // Buffer 5 minutes before actual expiration
+    return Date.now() < expireTime - 300000;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Resolves an image URL so it renders properly in the browser.
- * Routes private Cloudflare R2 URLs through the /r2-media streaming proxy
- * and handles presigned URLs and fallback placeholders.
+ * Preserves active presigned R2 URLs, routes unsigned or expired private
+ * Cloudflare R2 URLs through the /r2-media proxy, and handles fallback placeholders.
  */
 export function getDisplayImageUrl(url, fallback = 'https://placehold.co/200x200/1e293b/f8fafc?text=Print') {
   if (!url || typeof url !== 'string') return fallback;
@@ -103,7 +133,12 @@ export function getDisplayImageUrl(url, fallback = 'https://placehold.co/200x200
     return cleanUrl.substring(idx);
   }
 
-  // Handle Cloudflare R2 bucket storage URLs (presigned or raw)
+  // If the URL is already a valid, active presigned R2 URL, use it directly (no proxy hop needed)
+  if (cleanUrl.includes('X-Amz-Signature') && isPresignedUrlValid(cleanUrl)) {
+    return cleanUrl;
+  }
+
+  // Handle Cloudflare R2 bucket storage URLs (raw or expired presigned)
   if (cleanUrl.includes('r2.cloudflarestorage.com')) {
     try {
       const noQuery = cleanUrl.split('?')[0];
@@ -141,4 +176,5 @@ export function getDisplayImageUrl(url, fallback = 'https://placehold.co/200x200
 
   return cleanUrl;
 }
+
 
