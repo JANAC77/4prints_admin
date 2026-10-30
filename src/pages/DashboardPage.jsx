@@ -96,19 +96,23 @@ export function DashboardPage({ onNavigate }) {
 
         setStats({
           categories: categoriesTotal || mockCategories.length,
-          subcategories: subcategoriesTotal || subcategoriesData.length,
+          subcategories: subcategoriesTotal || subcategoriesTotal,
           products: productsTotal || mockProducts.length,
           admins: adminsTotal || mockAdminsList.length,
           auditLogs: auditTotal || mockAuditLogs.length,
         });
 
-        setRecentCategories(categoriesData.length > 0 ? categoriesData : mockCategories.slice(0, 4));
-        setRecentLogs(auditData.length > 0 ? auditData : mockAuditLogs.slice(0, 5));
+        const logs = auditData.length > 0 ? auditData : mockAuditLogs.slice(0, 5);
+        setRecentLogs(logs);
+
+        const recentCats = categoriesData.length > 0 ? categoriesData.slice(0, 4) : mockCategories.slice(0, 4);
+        setRecentCategories(recentCats);
       } catch (err) {
-        console.warn('Using fallback data for dashboard:', err);
+        console.warn('Dashboard data fetch warning:', err);
         setStats({
           categories: mockCategories.length,
           subcategories: mockSubcategories.length,
+          products: mockProducts.length,
           admins: mockAdminsList.length,
           auditLogs: mockAuditLogs.length,
         });
@@ -126,19 +130,19 @@ export function DashboardPage({ onNavigate }) {
     if (action?.includes('CREATE')) return 'success';
     if (action?.includes('UPDATE')) return 'primary';
     if (action?.includes('DELETE')) return 'danger';
-    if (action?.includes('LOGIN') || action?.includes('TFA')) return 'purple';
+    if (action?.includes('LOGIN') || action?.includes('TFA')) return 'primary';
     return 'default';
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-poppins">
       {/* Welcome Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-slate-800 to-zinc-900 text-white p-6 sm:p-8 shadow-xl border border-slate-800">
-        <div className="absolute top-0 right-0 -mt-12 -mr-12 w-64 h-64 bg-[#FFD40C]/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-3xl bg-[#110C0B] text-white p-6 sm:p-8 shadow-xl border border-zinc-800">
+        <div className="absolute top-0 right-0 -mt-12 -mr-12 w-64 h-64 bg-[#FFD40C]/20 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <span className="text-xs uppercase font-extrabold tracking-widest px-2.5 py-1 rounded-lg bg-[#FFD40C] text-slate-950 font-bold">
+              <span className="text-xs uppercase tracking-widest px-2.5 py-1 rounded-lg bg-[#FFD40C] text-[#110C0B] font-bold">
                 4PRINTS Admin Console
               </span>
               {admin?.tfaEnabled && (
@@ -148,10 +152,10 @@ export function DashboardPage({ onNavigate }) {
                 </span>
               )}
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold font-heading tracking-tight text-white">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
               Welcome back, {admin?.name || 'Administrator'}
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 max-w-xl">
+            <p className="text-xs sm:text-sm text-zinc-300 max-w-xl">
               Manage product hierarchy, subcategories, staff permissions, and review security logs from one unified control center.
             </p>
           </div>
@@ -162,7 +166,7 @@ export function DashboardPage({ onNavigate }) {
               size="sm"
               icon={Plus}
               onClick={() => onNavigate('products')}
-              className="bg-[#FFD40C] text-slate-950 font-bold hover:bg-amber-400"
+              className="bg-[#FFD40C] text-[#110C0B] font-bold hover:bg-amber-400"
             >
               Add Product
             </Button>
@@ -195,7 +199,7 @@ export function DashboardPage({ onNavigate }) {
           value={stats.products}
           subtitle="Ready print catalog"
           icon={Package}
-          gradient="from-amber-500 to-yellow-600"
+          gradient="from-[#FFD40C] to-amber-500"
           trend="Storefront active"
           trendType="up"
         />
@@ -204,7 +208,7 @@ export function DashboardPage({ onNavigate }) {
           value={stats.categories}
           subtitle="Top-level groups"
           icon={FolderTree}
-          gradient="from-indigo-500 to-indigo-600"
+          gradient="from-amber-400 to-yellow-500"
           trend="+12% this month"
           trendType="up"
         />
@@ -213,7 +217,7 @@ export function DashboardPage({ onNavigate }) {
           value={stats.subcategories}
           subtitle="Nested print items"
           icon={Boxes}
-          gradient="from-blue-500 to-cyan-600"
+          gradient="from-yellow-400 to-amber-500"
           trend="Active in catalog"
           trendType="neutral"
         />
@@ -222,7 +226,7 @@ export function DashboardPage({ onNavigate }) {
           value={stats.admins}
           subtitle="Authorized team"
           icon={Users}
-          gradient="from-purple-500 to-pink-600"
+          gradient="from-stone-700 to-zinc-900"
           trend="Role-governed"
           trendType="neutral"
         />
@@ -240,13 +244,13 @@ export function DashboardPage({ onNavigate }) {
       {/* Content Grid: Recent Categories & Audit Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left (2 cols): Category Catalog Overview */}
-        <div className="lg:col-span-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 shadow-sm space-y-4">
+        <div className="lg:col-span-2 rounded-2xl bg-white dark:bg-zinc-900 border border-[#E5E7EB] dark:border-zinc-800 p-5 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-base font-bold font-heading text-slate-900 dark:text-slate-100">
+              <h3 className="text-base font-bold text-[#111111] dark:text-zinc-100">
                 Active Categories
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
                 Primary sections displayed in the 4Prints storefront
               </p>
             </div>
@@ -265,9 +269,9 @@ export function DashboardPage({ onNavigate }) {
               <div
                 key={cat._id || cat.slug}
                 onClick={() => onNavigate('categories')}
-                className="group cursor-pointer p-3.5 rounded-xl border border-slate-100 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600 bg-slate-50/50 dark:bg-slate-800/40 hover:bg-white dark:hover:bg-slate-800 transition-all flex items-center space-x-3.5"
+                className="group cursor-pointer p-3.5 rounded-xl border border-[#E5E7EB] dark:border-zinc-800 hover:border-[#FFD40C] dark:hover:border-[#FFD40C] bg-[#FDFBF6]/60 dark:bg-zinc-800/40 hover:bg-white dark:hover:bg-zinc-800 transition-all flex items-center space-x-3.5"
               >
-                <div className="w-12 h-12 rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700 shrink-0 border border-slate-200 dark:border-slate-700">
+                <div className="w-12 h-12 rounded-lg overflow-hidden bg-stone-100 dark:bg-zinc-700 shrink-0 border border-[#E5E7EB] dark:border-zinc-700">
                   <img
                     src={cat.image || 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=200&auto=format&fit=crop&q=80'}
                     alt={cat.name}
@@ -276,14 +280,14 @@ export function DashboardPage({ onNavigate }) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                    <h4 className="text-sm font-semibold text-[#111111] dark:text-zinc-100 truncate group-hover:text-amber-600 dark:group-hover:text-[#FFD40C] transition-colors">
                       {cat.name}
                     </h4>
                     <Badge variant={cat.isActive !== false ? 'success' : 'default'} size="sm">
                       {cat.isActive !== false ? 'Active' : 'Inactive'}
                     </Badge>
                   </div>
-                  <p className="text-xs text-slate-400 font-mono truncate mt-0.5">
+                  <p className="text-xs text-zinc-400 font-mono truncate mt-0.5">
                     /{cat.slug}
                   </p>
                 </div>
@@ -293,14 +297,14 @@ export function DashboardPage({ onNavigate }) {
         </div>
 
         {/* Right (1 col): Recent Security & Audit Logs */}
-        <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 shadow-sm flex flex-col justify-between">
+        <div className="rounded-2xl bg-white dark:bg-zinc-900 border border-[#E5E7EB] dark:border-zinc-800 p-5 shadow-xs flex flex-col justify-between">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-base font-bold font-heading text-slate-900 dark:text-slate-100">
+                <h3 className="text-base font-bold text-[#111111] dark:text-zinc-100">
                   Recent Audit Trail
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
                   Latest administrative operations
                 </p>
               </div>
@@ -318,21 +322,21 @@ export function DashboardPage({ onNavigate }) {
               {recentLogs.map((log, idx) => (
                 <div
                   key={log._id || idx}
-                  className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/60 flex items-start space-x-3 text-xs"
+                  className="p-3 rounded-xl bg-stone-50 dark:bg-zinc-800/40 border border-stone-200/70 dark:border-zinc-800 flex items-start space-x-3 text-xs"
                 >
-                  <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-500 shrink-0 mt-0.5">
+                  <div className="p-1.5 rounded-lg bg-[#FFF3C4] dark:bg-[#FFD40C]/20 text-amber-800 dark:text-[#FFD40C] shrink-0 mt-0.5">
                     <Clock className="w-3.5 h-3.5" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-1">
-                      <span className="font-semibold text-slate-900 dark:text-slate-200 truncate">
+                      <span className="font-semibold text-[#111111] dark:text-zinc-200 truncate">
                         {log.adminEmail || 'Admin'}
                       </span>
                       <Badge variant={getActionBadgeVariant(log.action)} size="sm">
                         {log.action}
                       </Badge>
                     </div>
-                    <p className="text-[11px] text-slate-400 mt-1">
+                    <p className="text-[11px] text-zinc-400 mt-1">
                       {formatRelativeTime(log.createdAt)}
                     </p>
                   </div>
@@ -341,7 +345,7 @@ export function DashboardPage({ onNavigate }) {
             </div>
           </div>
 
-          <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800">
+          <div className="pt-4 mt-4 border-t border-[#E5E7EB] dark:border-zinc-800">
             <Button
               variant="outline"
               size="sm"

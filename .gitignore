@@ -49,3 +49,5 @@ build/
 *.njsproj
 *.sln
 *.sw?
+
+.vite/

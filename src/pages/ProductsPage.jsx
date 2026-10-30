@@ -1089,7 +1089,7 @@ export function ProductsPage({ initialCategoryId = null, initialSubcategoryId = 
                     {/* Column 2: Category & Subcategory */}
                     <TableCell>
                       <div className="space-y-1">
-                        <Badge variant="purple" size="sm">
+                        <Badge variant="primary" size="sm">
                           {getCategoryName(product.category)}
                         </Badge>
                         {product.subCategory && (
@@ -1257,7 +1257,7 @@ export function ProductsPage({ initialCategoryId = null, initialSubcategoryId = 
                   {/* Body Content */}
                   <div className="p-4 space-y-2.5">
                     <div className="flex items-center justify-between gap-2">
-                      <Badge variant="purple" size="sm">
+                      <Badge variant="primary" size="sm">
                         {getCategoryName(product.category)}
                       </Badge>
                       <code className="text-[10px] font-mono text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-400/10 px-1.5 py-0.5 rounded border border-amber-200 dark:border-amber-400/20 font-bold">
@@ -2447,7 +2447,7 @@ export function ProductsPage({ initialCategoryId = null, initialSubcategoryId = 
               </div>
               <div className="flex-1 space-y-2">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <Badge variant="purple" size="sm">
+                  <Badge variant="primary" size="sm">
                     {getCategoryName(selectedProduct.category)}
                   </Badge>
                   {selectedProduct.subCategory && (

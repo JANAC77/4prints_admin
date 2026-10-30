@@ -78,9 +78,9 @@ export function ImageUploader({
   };
 
   return (
-    <div className="w-full space-y-1.5 text-left">
+    <div className="w-full space-y-1.5 text-left font-poppins">
       {label && (
-        <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+        <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
           {label}
         </label>
       )}
@@ -91,8 +91,8 @@ export function ImageUploader({
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
         className={`relative group cursor-pointer border-2 border-dashed rounded-2xl p-4 transition-all duration-200 flex flex-col items-center justify-center min-h-[160px] text-center ${isDragging
-          ? 'border-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/20'
-          : 'border-slate-300 dark:border-slate-700/80 hover:border-indigo-400 bg-slate-50/50 dark:bg-slate-900/40'
+          ? 'border-[#FFD40C] bg-[#FFD40C]/10 dark:bg-[#FFD40C]/10'
+          : 'border-[#E5E7EB] dark:border-zinc-700 hover:border-amber-400 bg-white dark:bg-zinc-900/60'
           }`}
       >
         <input
@@ -108,7 +108,7 @@ export function ImageUploader({
         />
 
         {preview ? (
-          <div className="relative w-full h-44 rounded-xl overflow-hidden group/preview border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-950 flex items-center justify-center">
+          <div className="relative w-full h-44 rounded-xl overflow-hidden group/preview border border-zinc-200 dark:border-zinc-700 bg-stone-50 dark:bg-zinc-950 flex items-center justify-center">
             <img
               src={preview}
               alt="Uploaded Preview"
@@ -121,30 +121,30 @@ export function ImageUploader({
               <button
                 type="button"
                 onClick={handleClear}
-                className="p-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg transition-colors shadow-md"
+                className="p-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg transition-colors shadow-md cursor-pointer"
                 title="Remove Image"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
             {selectedFile && (
-              <span className="absolute bottom-2 left-2 text-[10px] bg-slate-900/80 text-slate-200 px-2 py-0.5 rounded backdrop-blur-sm">
+              <span className="absolute bottom-2 left-2 text-[10px] bg-zinc-900/80 text-zinc-200 px-2 py-0.5 rounded backdrop-blur-sm">
                 {selectedFile.name} ({formatBytes(selectedFile.size)})
               </span>
             )}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-4 space-y-2 text-slate-500 dark:text-slate-400">
-            <div className="p-3 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 rounded-xl group-hover:scale-110 transition-transform">
+          <div className="flex flex-col items-center justify-center py-4 space-y-2 text-zinc-500 dark:text-zinc-400">
+            <div className="p-3 bg-[#FFF3C4] dark:bg-[#FFD40C]/15 text-amber-800 dark:text-[#FFD40C] rounded-xl group-hover:scale-110 transition-transform">
               <UploadCloud className="w-6 h-6" />
             </div>
             <div className="text-sm">
-              <span className="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+              <span className="font-semibold text-amber-700 dark:text-[#FFD40C] hover:underline">
                 Click to browse
               </span>{' '}
               or drag & drop
             </div>
-            <p className="text-xs text-slate-400">{helperText}</p>
+            <p className="text-xs text-zinc-400">{helperText}</p>
           </div>
         )}
       </div>

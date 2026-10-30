@@ -154,7 +154,7 @@ export function AuditLogsPage() {
           <select
             value={selectedAction}
             onChange={(e) => setSelectedAction(e.target.value)}
-            className="w-full rounded-xl py-2.5 px-3.5 text-sm bg-slate-50 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+            className="w-full rounded-xl py-2.5 px-3.5 text-sm bg-slate-50 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:ring-4 focus:ring-[#FFD40C]/25 focus:border-[#FFD40C] outline-none"
           >
             {actionTypes.map((act) => (
               <option key={act} value={act}>
@@ -227,7 +227,7 @@ export function AuditLogsPage() {
                 <TableCell className="text-right">
                   <button
                     onClick={() => handleInspectLog(log)}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-slate-800 transition-colors"
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-slate-800 transition-colors"
                     title="Inspect Details"
                   >
                     <Eye className="w-4 h-4" />
@@ -299,7 +299,7 @@ export function AuditLogsPage() {
               <span className="text-slate-400 font-semibold uppercase flex items-center gap-1.5">
                 <FileCode className="w-3.5 h-3.5" /> Event Payload Data
               </span>
-              <pre className="p-4 rounded-xl bg-slate-950 text-indigo-300 font-mono text-[11px] overflow-x-auto border border-slate-800">
+              <pre className="p-4 rounded-xl bg-slate-950 text-amber-300 font-mono text-[11px] overflow-x-auto border border-slate-800">
                 {JSON.stringify(selectedLog.details || {}, null, 2)}
               </pre>
             </div>

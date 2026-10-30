@@ -44,27 +44,27 @@ export function Modal({
   const resolvedWidth = maxWidth || sizeClasses[size] || sizeClasses.md;
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-5 overflow-hidden">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-5 overflow-hidden font-poppins">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-slate-950/75 backdrop-blur-sm transition-opacity animate-fade-in"
+        className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity animate-fade-in"
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Modal Dialog */}
       <div
-        className={`relative w-full ${resolvedWidth} max-h-[90vh] flex flex-col rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl transition-all animate-fade-in z-10 overflow-hidden ${className}`}
+        className={`relative w-full ${resolvedWidth} max-h-[90vh] flex flex-col rounded-2xl bg-white dark:bg-zinc-900 border border-[#E5E7EB] dark:border-zinc-800 shadow-2xl transition-all animate-fade-in z-10 overflow-hidden ${className}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-start justify-between px-5 sm:px-6 py-4 border-b border-slate-100 dark:border-slate-800 shrink-0 bg-white dark:bg-slate-900">
+        <div className="flex items-start justify-between px-5 sm:px-6 py-4 border-b border-[#E5E7EB] dark:border-zinc-800 shrink-0 bg-white dark:bg-zinc-900">
           <div>
-            <h3 className="text-lg font-bold font-heading text-slate-900 dark:text-slate-100">
+            <h3 className="text-lg font-bold text-[#111111] dark:text-zinc-100">
               {title}
             </h3>
             {description && (
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
                 {description}
               </p>
             )}
@@ -72,7 +72,7 @@ export function Modal({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-600 dark:hover:text-slate-200 transition-colors ml-4"
+            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors ml-4 cursor-pointer"
             aria-label="Close dialog"
           >
             <X className="w-5 h-5" />
@@ -84,7 +84,7 @@ export function Modal({
 
         {/* Footer */}
         {footer && (
-          <div className="px-5 sm:px-6 py-3.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-950/80 flex items-center justify-end gap-3 shrink-0">
+          <div className="px-5 sm:px-6 py-3.5 border-t border-[#E5E7EB] dark:border-zinc-800 bg-[#FDFBF6]/90 dark:bg-zinc-950/80 flex items-center justify-end gap-3 shrink-0">
             {footer}
           </div>
         )}

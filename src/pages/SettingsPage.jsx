@@ -169,7 +169,7 @@ export function SettingsPage() {
       <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white font-bold text-lg flex items-center justify-center uppercase shadow-lg shadow-indigo-500/20">
+            <div className="w-12 h-12 rounded-xl bg-[#110C0B] text-[#FFD40C] border border-[#FFD40C]/30 font-bold text-lg flex items-center justify-center uppercase shadow-xs">
               {admin?.name?.charAt(0) || 'A'}
             </div>
             <div>
@@ -179,7 +179,7 @@ export function SettingsPage() {
               <p className="text-xs text-slate-400">{admin?.email}</p>
             </div>
           </div>
-          <Badge variant="purple" size="md" className="uppercase font-bold">
+          <Badge variant="primary" size="md" className="uppercase font-bold">
             {admin?.role || 'Admin'}
           </Badge>
         </div>
@@ -210,7 +210,7 @@ export function SettingsPage() {
       <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
         <div className="flex items-start justify-between">
           <div className="flex items-start space-x-3.5">
-            <div className="p-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 shrink-0">
+            <div className="p-3 rounded-xl bg-[#FFF3C4] dark:bg-[#FFD40C]/20 text-amber-800 dark:text-[#FFD40C] shrink-0">
               <KeyRound className="w-6 h-6" />
             </div>
             <div>
@@ -352,7 +352,7 @@ export function SettingsPage() {
                 onClick={() => setTheme(t.id)}
                 className={`p-4 rounded-xl border flex flex-col items-center justify-center gap-2 transition-all ${
                   isSelected
-                    ? 'border-indigo-600 bg-indigo-50/50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-semibold shadow-sm'
+                    ? 'border-[#FFD40C] bg-[#FFF3C4] dark:bg-[#FFD40C]/20 text-amber-950 dark:text-[#FFD40C] font-semibold shadow-xs'
                     : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                 }`}
               >
@@ -411,7 +411,7 @@ export function SettingsPage() {
                 Or enter secret key manually
               </label>
               <div className="flex items-center gap-2">
-                <code className="flex-1 p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-mono text-xs text-indigo-600 dark:text-indigo-400 truncate">
+                <code className="flex-1 p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-mono text-xs text-amber-800 dark:text-amber-300 truncate">
                   {tfaSetupData.secret}
                 </code>
                 <Button

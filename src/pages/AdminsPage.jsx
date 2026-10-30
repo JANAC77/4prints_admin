@@ -199,7 +199,7 @@ export function AdminsPage() {
                 <TableRow key={adm._id}>
                   <TableCell>
                     <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white font-bold text-sm flex items-center justify-center shrink-0 uppercase shadow-md shadow-indigo-500/20">
+                      <div className="w-10 h-10 rounded-xl bg-[#110C0B] text-[#FFD40C] border border-[#FFD40C]/30 font-bold text-sm flex items-center justify-center shrink-0 uppercase shadow-xs">
                         {adm.name?.charAt(0) || 'A'}
                       </div>
                       <div>
@@ -208,7 +208,7 @@ export function AdminsPage() {
                             {adm.name}
                           </span>
                           {isSelf && (
-                            <span className="text-[10px] font-bold bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 rounded border border-indigo-200 dark:border-indigo-800">
+                            <span className="text-[10px] font-bold bg-[#FFF3C4] dark:bg-[#FFD40C]/20 text-amber-900 dark:text-[#FFD40C] px-1.5 py-0.5 rounded border border-yellow-300 dark:border-[#FFD40C]/40">
                               YOU
                             </span>
                           )}
@@ -335,7 +335,7 @@ export function AdminsPage() {
             <select
               value={formData.role}
               onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-              className="w-full rounded-xl py-2.5 px-3.5 text-sm bg-slate-50 dark:bg-slate-900/60 border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500"
+              className="w-full rounded-xl py-2.5 px-3.5 text-sm bg-slate-50 dark:bg-slate-900/60 border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-4 focus:ring-[#FFD40C]/25 focus:border-[#FFD40C]"
             >
               <option value="admin">Admin (Standard Access)</option>
               <option value="superadmin">Superadmin (Full Access & Team Management)</option>

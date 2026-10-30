@@ -278,7 +278,7 @@ export function CategoriesPage({ onSelectCategoryForSubcategories, onSelectCateg
                 key={st}
                 onClick={() => setStatusFilter(st)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${statusFilter === st
-                  ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-sm'
+                  ? 'bg-[#FFD40C] text-[#110C0B] font-bold shadow-sm'
                   : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-100'
                   }`}
               >
@@ -340,7 +340,7 @@ export function CategoriesPage({ onSelectCategoryForSubcategories, onSelectCateg
                   </div>
                 </TableCell>
                 <TableCell>
-                  <code className="text-xs font-mono px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400">
+                  <code className="text-xs font-mono px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-amber-800 dark:text-amber-300">
                     /{cat.slug}
                   </code>
                 </TableCell>
@@ -365,7 +365,7 @@ export function CategoriesPage({ onSelectCategoryForSubcategories, onSelectCateg
                     )}
                     <button
                       onClick={() => handleOpenPreview(cat)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-slate-800 transition-colors"
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-slate-800 transition-colors"
                       title="View Details"
                     >
                       <Eye className="w-4 h-4" />
@@ -443,7 +443,7 @@ export function CategoriesPage({ onSelectCategoryForSubcategories, onSelectCateg
               rows={3}
               required
               placeholder="Brief summary of this category for customer browsing..."
-              className="w-full rounded-xl p-3 text-sm bg-slate-50 dark:bg-slate-900/60 border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500"
+              className="w-full rounded-xl p-3 text-sm bg-slate-50 dark:bg-slate-900/60 border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-[#FFD40C]/25 focus:border-[#FFD40C]"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             />
@@ -468,7 +468,7 @@ export function CategoriesPage({ onSelectCategoryForSubcategories, onSelectCateg
               type="checkbox"
               checked={formData.isActive}
               onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-              className="w-5 h-5 accent-indigo-600 rounded cursor-pointer"
+              className="w-5 h-5 accent-[#FFD40C] rounded cursor-pointer"
             />
           </div>
         </form>
@@ -518,7 +518,7 @@ export function CategoriesPage({ onSelectCategoryForSubcategories, onSelectCateg
             </label>
             <textarea
               rows={3}
-              className="w-full rounded-xl p-3 text-sm bg-slate-50 dark:bg-slate-900/60 border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500"
+              className="w-full rounded-xl p-3 text-sm bg-slate-50 dark:bg-slate-900/60 border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-4 focus:ring-[#FFD40C]/25 focus:border-[#FFD40C]"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             />
@@ -543,7 +543,7 @@ export function CategoriesPage({ onSelectCategoryForSubcategories, onSelectCateg
               type="checkbox"
               checked={formData.isActive}
               onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-              className="w-5 h-5 accent-indigo-600 rounded cursor-pointer"
+              className="w-5 h-5 accent-[#FFD40C] rounded cursor-pointer"
             />
           </div>
         </form>

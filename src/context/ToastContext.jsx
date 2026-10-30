@@ -37,20 +37,20 @@ export function ToastProvider({ children }) {
       case 'warning':
         return <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />;
       default:
-        return <Info className="w-5 h-5 text-indigo-500 shrink-0" />;
+        return <Info className="w-5 h-5 text-blue-500 shrink-0" />;
     }
   };
 
   const getToastStyles = (type) => {
     switch (type) {
       case 'success':
-        return 'border-emerald-500/30 bg-emerald-50/90 dark:bg-emerald-950/50 text-emerald-900 dark:text-emerald-200';
+        return 'border-emerald-500/30 bg-emerald-50/95 dark:bg-emerald-950/70 text-emerald-900 dark:text-emerald-200';
       case 'error':
-        return 'border-rose-500/30 bg-rose-50/90 dark:bg-rose-950/50 text-rose-900 dark:text-rose-200';
+        return 'border-rose-500/30 bg-rose-50/95 dark:bg-rose-950/70 text-rose-900 dark:text-rose-200';
       case 'warning':
-        return 'border-amber-500/30 bg-amber-50/90 dark:bg-amber-950/50 text-amber-900 dark:text-amber-200';
+        return 'border-amber-500/30 bg-amber-50/95 dark:bg-amber-950/70 text-amber-900 dark:text-amber-200';
       default:
-        return 'border-indigo-500/30 bg-indigo-50/90 dark:bg-indigo-950/50 text-indigo-900 dark:text-indigo-200';
+        return 'border-blue-500/30 bg-blue-50/95 dark:bg-blue-950/70 text-blue-900 dark:text-blue-200';
     }
   };
 
@@ -58,7 +58,7 @@ export function ToastProvider({ children }) {
     <ToastContext.Provider value={toast}>
       {children}
       {/* Floating Toast Notification Container */}
-      <div className="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 max-w-md w-full pointer-events-none px-4 sm:px-0">
+      <div className="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 max-w-md w-full pointer-events-none px-4 sm:px-0 font-poppins">
         {toasts.map((item) => (
           <div
             key={item.id}
@@ -73,7 +73,7 @@ export function ToastProvider({ children }) {
             </div>
             <button
               onClick={() => removeToast(item.id)}
-              className="text-current opacity-60 hover:opacity-100 transition-opacity p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
+              className="text-current opacity-60 hover:opacity-100 transition-opacity p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
               aria-label="Close notification"
             >
               <X className="w-4 h-4" />

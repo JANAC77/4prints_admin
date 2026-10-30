@@ -22,11 +22,11 @@ function AppContent() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-slate-100 space-y-4">
-        <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center shadow-xl shadow-indigo-500/30 animate-pulse">
-          <Loader2 className="w-6 h-6 animate-spin text-white" />
+      <div className="min-h-screen bg-[#FDFBF6] flex flex-col items-center justify-center text-[#111111] space-y-4 font-poppins">
+        <div className="w-12 h-12 rounded-2xl bg-[#FFD40C] flex items-center justify-center shadow-lg shadow-[#FFD40C]/30 animate-pulse">
+          <Loader2 className="w-6 h-6 animate-spin text-[#110C0B]" />
         </div>
-        <p className="text-sm font-medium text-slate-400">Loading 4Prints Console...</p>
+        <p className="text-sm font-medium text-zinc-600">Loading 4Prints Console...</p>
       </div>
     );
   }

@@ -393,7 +393,7 @@ export function SubcategoriesPage({ initialCategoryId, onSelectSubcategoryForPro
           <select
             value={selectedCategoryId}
             onChange={(e) => setSelectedCategoryId(e.target.value)}
-            className="w-full rounded-xl py-2.5 px-3.5 text-sm bg-slate-50 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+            className="w-full rounded-xl py-2.5 px-3.5 text-sm bg-slate-50 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:ring-4 focus:ring-[#FFD40C]/25 focus:border-[#FFD40C] outline-none"
           >
             <option value="">All Categories (All Subcategories)</option>
             {categories.map((cat) => (
@@ -428,7 +428,7 @@ export function SubcategoriesPage({ initialCategoryId, onSelectSubcategoryForPro
                 key={st}
                 onClick={() => setStatusFilter(st)}
                 className={`flex-1 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${statusFilter === st
-                  ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-sm'
+                  ? 'bg-[#FFD40C] text-[#110C0B] font-bold shadow-sm'
                   : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-100'
                   }`}
               >
@@ -490,7 +490,7 @@ export function SubcategoriesPage({ initialCategoryId, onSelectSubcategoryForPro
                   </div>
                 </TableCell>
                 <TableCell>
-                  <code className="text-xs font-mono px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400">
+                  <code className="text-xs font-mono px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-amber-800 dark:text-amber-300">
                     /{sub.slug}
                   </code>
                 </TableCell>
@@ -574,7 +574,7 @@ export function SubcategoriesPage({ initialCategoryId, onSelectSubcategoryForPro
             <select
               value={formData.categoryId}
               onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
-              className="w-full rounded-xl py-2.5 px-3.5 text-sm bg-slate-50 dark:bg-slate-900/60 border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500"
+              className="w-full rounded-xl py-2.5 px-3.5 text-sm bg-slate-50 dark:bg-slate-900/60 border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-4 focus:ring-[#FFD40C]/25 focus:border-[#FFD40C]"
               required
             >
               {categories.map((cat) => (
@@ -605,7 +605,7 @@ export function SubcategoriesPage({ initialCategoryId, onSelectSubcategoryForPro
             <textarea
               rows={3}
               placeholder="Paper weight, finish specifications, minimum quantities..."
-              className="w-full rounded-xl p-3 text-sm bg-slate-50 dark:bg-slate-900/60 border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500"
+              className="w-full rounded-xl p-3 text-sm bg-slate-50 dark:bg-slate-900/60 border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-[#FFD40C]/25 focus:border-[#FFD40C]"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             />
@@ -629,7 +629,7 @@ export function SubcategoriesPage({ initialCategoryId, onSelectSubcategoryForPro
               type="checkbox"
               checked={formData.isActive}
               onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-              className="w-5 h-5 accent-indigo-600 rounded cursor-pointer"
+              className="w-5 h-5 accent-[#FFD40C] rounded cursor-pointer"
             />
           </div>
         </form>
@@ -679,7 +679,7 @@ export function SubcategoriesPage({ initialCategoryId, onSelectSubcategoryForPro
             </label>
             <textarea
               rows={3}
-              className="w-full rounded-xl p-3 text-sm bg-slate-50 dark:bg-slate-900/60 border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500"
+              className="w-full rounded-xl p-3 text-sm bg-slate-50 dark:bg-slate-900/60 border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-4 focus:ring-[#FFD40C]/25 focus:border-[#FFD40C]"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             />
@@ -704,7 +704,7 @@ export function SubcategoriesPage({ initialCategoryId, onSelectSubcategoryForPro
               type="checkbox"
               checked={formData.isActive}
               onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-              className="w-5 h-5 accent-indigo-600 rounded cursor-pointer"
+              className="w-5 h-5 accent-[#FFD40C] rounded cursor-pointer"
             />
           </div>
         </form>

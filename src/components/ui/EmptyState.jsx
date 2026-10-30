@@ -10,14 +10,14 @@ export function EmptyState({
   onAction,
 }) {
   return (
-    <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
-      <div className="p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-500 dark:text-indigo-400 mb-4 ring-8 ring-indigo-500/5">
+    <div className="flex flex-col items-center justify-center py-16 px-4 text-center font-poppins">
+      <div className="p-4 rounded-2xl bg-[#FFF3C4] dark:bg-[#FFD40C]/10 text-amber-800 dark:text-[#FFD40C] mb-4 ring-8 ring-[#FFD40C]/15">
         <Icon className="w-8 h-8" />
       </div>
-      <h3 className="text-base font-bold font-heading text-slate-900 dark:text-slate-100">
+      <h3 className="text-base font-bold text-[#111111] dark:text-zinc-100">
         {title}
       </h3>
-      <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-sm mt-1 mb-5 leading-relaxed">
+      <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 max-w-sm mt-1 mb-5 leading-relaxed">
         {description}
       </p>
       {actionLabel && onAction && (

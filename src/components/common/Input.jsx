@@ -16,19 +16,19 @@ export const Input = forwardRef(function Input(
   const inputId = id || (label ? `input-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined);
 
   return (
-    <div className="w-full space-y-1.5 text-left">
+    <div className="w-full space-y-1.5 text-left font-poppins">
       {label && (
         <label
           htmlFor={inputId}
-          className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300"
+          className="block text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300"
         >
           {label}
         </label>
       )}
 
-      <div className="relative rounded-xl shadow-sm">
+      <div className="relative rounded-xl shadow-xs">
         {Icon && (
-          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
             <Icon className="w-4 h-4" />
           </div>
         )}
@@ -40,15 +40,15 @@ export const Input = forwardRef(function Input(
             ${Icon ? 'pl-10' : 'pl-3.5'} 
             ${rightElement ? 'pr-11' : 'pr-3.5'} 
             py-2.5 
-            bg-slate-50 dark:bg-slate-900/60 
-            text-slate-900 dark:text-slate-100 
+            bg-white dark:bg-zinc-900/80 
+            text-[#111111] dark:text-zinc-100 
             border ${error
               ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20'
-              : 'border-slate-300 dark:border-slate-700/80 focus:border-indigo-500 focus:ring-indigo-500/20'
+              : 'border-[#E5E7EB] dark:border-zinc-700 hover:border-zinc-400 focus:border-[#FFD40C] focus:ring-[#FFD40C]/25'
             }
-            placeholder:text-slate-400 dark:placeholder:text-slate-500
-            focus:outline-none focus:ring-4
-            disabled:opacity-50 disabled:bg-slate-100 dark:disabled:bg-slate-800 disabled:cursor-not-allowed
+            placeholder:text-zinc-400 dark:placeholder:text-zinc-500
+            focus:outline-none focus:ring-3
+            disabled:opacity-50 disabled:bg-zinc-100 dark:disabled:bg-zinc-800 disabled:cursor-not-allowed
             ${className}`}
           {...props}
         />
@@ -63,7 +63,7 @@ export const Input = forwardRef(function Input(
       {error ? (
         <p className="text-xs text-rose-500 font-medium">{error}</p>
       ) : helperText ? (
-        <p className="text-xs text-slate-500 dark:text-slate-400">{helperText}</p>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">{helperText}</p>
       ) : null}
     </div>
   );

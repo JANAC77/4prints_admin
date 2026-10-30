@@ -61,7 +61,7 @@ export function Header({ activeTab, onToggleMobileSidebar }) {
   const page = getPageTitle();
 
   return (
-    <header className="sticky top-0 z-30 w-full h-16 border-b border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between transition-colors">
+    <header className="sticky top-0 z-30 w-full h-16 border-b border-[#E5E7EB] dark:border-zinc-800 bg-white/95 dark:bg-[#18191d]/95 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between transition-colors">
       {/* Left: Mobile trigger & Page Info */}
       <div className="flex items-center space-x-3 sm:space-x-4">
         <button
@@ -127,7 +127,7 @@ export function Header({ activeTab, onToggleMobileSidebar }) {
           title={`Switch to ${isDark ? 'Light' : 'Dark'} mode`}
           aria-label="Toggle dark/light theme"
         >
-          {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-indigo-600" />}
+          {isDark ? <Sun className="w-4 h-4 text-[#FFD40C]" /> : <Moon className="w-4 h-4 text-slate-700" />}
         </button>
       </div>
     </header>
