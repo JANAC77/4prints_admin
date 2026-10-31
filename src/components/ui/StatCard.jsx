@@ -6,9 +6,27 @@ export function StatCard({
   subtitle,
   icon: Icon,
   gradient = 'from-[#FFD40C] to-amber-500',
+  iconColor,
   trend,
   trendType = 'up', // 'up' | 'down' | 'neutral'
 }) {
+  const isDarkGradient =
+    gradient.includes('stone') ||
+    gradient.includes('zinc') ||
+    gradient.includes('slate') ||
+    gradient.includes('neutral') ||
+    gradient.includes('gray') ||
+    gradient.includes('emerald') ||
+    gradient.includes('teal') ||
+    gradient.includes('indigo') ||
+    gradient.includes('violet') ||
+    gradient.includes('purple') ||
+    gradient.includes('blue') ||
+    gradient.includes('rose') ||
+    gradient.includes('red');
+
+  const resolvedIconColor = iconColor || (isDarkGradient ? 'text-white' : 'text-[#110C0B]');
+
   return (
     <div className="relative overflow-hidden rounded-2xl bg-white dark:bg-zinc-900 border border-[#E5E7EB] dark:border-zinc-800 p-5 shadow-xs transition-all duration-300 hover:shadow-md hover:border-amber-300 dark:hover:border-zinc-700 group font-poppins">
       {/* Background soft glow */}
@@ -44,7 +62,7 @@ export function StatCard({
 
         {Icon && (
           <div
-            className={`p-3 rounded-xl bg-gradient-to-br ${gradient} text-[#110C0B] shadow-sm group-hover:scale-105 transition-transform shrink-0`}
+            className={`p-3 rounded-xl bg-gradient-to-br ${gradient} ${resolvedIconColor} shadow-sm group-hover:scale-105 transition-transform shrink-0 flex items-center justify-center`}
           >
             <Icon className="w-5 h-5" />
           </div>

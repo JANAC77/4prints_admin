@@ -29,7 +29,7 @@ import {
   mockAdminsList,
   mockAuditLogs,
 } from '../utils/mockData.js';
-import { formatDate, formatRelativeTime } from '../utils/formatters.js';
+import { formatDate, formatRelativeTime, getDisplayImageUrl } from '../utils/formatters.js';
 
 export function DashboardPage({ onNavigate }) {
   const { isDemoMode, admin } = useAuth();
@@ -166,25 +166,23 @@ export function DashboardPage({ onNavigate }) {
               size="sm"
               icon={Plus}
               onClick={() => onNavigate('products')}
-              className="bg-[#FFD40C] text-[#110C0B] font-bold hover:bg-amber-400"
+              className="bg-[#FFD40C] text-[#110C0B] font-bold hover:bg-amber-400 shadow-sm"
             >
               Add Product
             </Button>
             <Button
-              variant="secondary"
+              variant="frosted"
               size="sm"
               icon={Plus}
               onClick={() => onNavigate('categories')}
-              className="bg-white/10 hover:bg-white/20 text-white border-white/20"
             >
               Add Category
             </Button>
             <Button
-              variant="secondary"
+              variant="frosted"
               size="sm"
               icon={Plus}
               onClick={() => onNavigate('subcategories')}
-              className="bg-white/10 hover:bg-white/20 text-white border-white/20"
             >
               Add Subcategory
             </Button>
@@ -200,6 +198,7 @@ export function DashboardPage({ onNavigate }) {
           subtitle="Ready print catalog"
           icon={Package}
           gradient="from-[#FFD40C] to-amber-500"
+          iconColor="text-[#110C0B]"
           trend="Storefront active"
           trendType="up"
         />
@@ -209,6 +208,7 @@ export function DashboardPage({ onNavigate }) {
           subtitle="Top-level groups"
           icon={FolderTree}
           gradient="from-amber-400 to-yellow-500"
+          iconColor="text-[#110C0B]"
           trend="+12% this month"
           trendType="up"
         />
@@ -218,6 +218,7 @@ export function DashboardPage({ onNavigate }) {
           subtitle="Nested print items"
           icon={Boxes}
           gradient="from-yellow-400 to-amber-500"
+          iconColor="text-[#110C0B]"
           trend="Active in catalog"
           trendType="neutral"
         />
@@ -226,7 +227,8 @@ export function DashboardPage({ onNavigate }) {
           value={stats.admins}
           subtitle="Authorized team"
           icon={Users}
-          gradient="from-stone-700 to-zinc-900"
+          gradient="from-stone-800 to-zinc-950"
+          iconColor="text-white"
           trend="Role-governed"
           trendType="neutral"
         />
@@ -236,6 +238,7 @@ export function DashboardPage({ onNavigate }) {
           subtitle="Logged actions"
           icon={ShieldCheck}
           gradient="from-emerald-500 to-teal-600"
+          iconColor="text-white"
           trend="Full audit trail"
           trendType="up"
         />
@@ -271,10 +274,14 @@ export function DashboardPage({ onNavigate }) {
                 onClick={() => onNavigate('categories')}
                 className="group cursor-pointer p-3.5 rounded-xl border border-[#E5E7EB] dark:border-zinc-800 hover:border-[#FFD40C] dark:hover:border-[#FFD40C] bg-[#FDFBF6]/60 dark:bg-zinc-800/40 hover:bg-white dark:hover:bg-zinc-800 transition-all flex items-center space-x-3.5"
               >
-                <div className="w-12 h-12 rounded-lg overflow-hidden bg-stone-100 dark:bg-zinc-700 shrink-0 border border-[#E5E7EB] dark:border-zinc-700">
+                <div className="w-12 h-12 rounded-lg overflow-hidden bg-stone-100 dark:bg-zinc-700 shrink-0 border border-[#E5E7EB] dark:border-zinc-700 flex items-center justify-center">
                   <img
-                    src={cat.image || 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=200&auto=format&fit=crop&q=80'}
+                    src={getDisplayImageUrl(cat.image)}
                     alt={cat.name}
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=200&auto=format&fit=crop&q=80';
+                    }}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>

@@ -34,6 +34,8 @@ export function Button({
       'bg-transparent hover:bg-stone-100 dark:hover:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 focus:ring-zinc-400',
     outline:
       'bg-transparent border border-zinc-300 dark:border-zinc-700 hover:bg-[#FFD40C]/10 hover:border-[#FFD40C] text-zinc-800 dark:text-zinc-200 focus:ring-[#FFD40C]',
+    frosted:
+      'bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40 backdrop-blur-sm font-medium focus:ring-white/30',
   };
 
   return (
